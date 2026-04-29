@@ -33,7 +33,7 @@ def download_data():
     os.makedirs('data', exist_ok=True)
     for filepath, file_id in FILE_IDS.items():
         if not os.path.exists(filepath):
-            url = f'https://drive.google.com/uc?id={1Ri_Hvit0yrEox1csG_w1Jv4qx7jsKB4I?usp=drive_link}'
+            url = f'https://drive.google.com/uc?id={1Ri_Hvit0yrEox1csG_w1Jv4qx7jsKB4I}'
             with st.spinner(f'Downloading {filepath}...'):
                 gdown.download(url, filepath, quiet=False)
 
