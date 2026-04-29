@@ -5,4 +5,4 @@ scikit-learn
 streamlit
 openpyxl
 pyarrow
-gdown
+requests
