@@ -56,7 +56,7 @@ def download_file(file_id, destination):
                 f.write(chunk)
 
 def download_data():
-    os.makedirs('data', exist_ok=True)
+    os.makedirs('Data', exist_ok=True)
     for filepath, file_id in FILE_IDS.items():
         if not os.path.exists(filepath):
             with st.spinner(f'Downloading {filepath}...'):
