@@ -21,7 +21,10 @@ st.set_page_config(
 # ════════════════════════════════════════════════════════
 # STEP 1 — AUTO DOWNLOAD DATA FROM GOOGLE DRIVE
 # ════════════════════════════════════════════════════════
+import requests
+import os
 
+# ── Paste your 4 file IDs below ──
 FILE_IDS = {
     'Data/cleaned_retail.csv'    : '15WIrVm392pSeOkWfTaAguazFCbwlmqs3',
     'Data/rfm_segments.csv'      : '1aDABUakMpWHNlLvdfCHNkK-E01T9VKA1',
@@ -29,18 +32,39 @@ FILE_IDS = {
     'Data/popular_products.csv'  : '1X8JpqmdD1QSfE5D_ymsFxxj4RSvkVNpi',
 }
 
-FOLDER_ID = '1Ri_Hvit0yrEox1csG_w1Jv4qx7jsKB4I'
+def download_file(file_id, destination):
+    """Downloads a file from Google Drive using requests."""
+
+    def get_confirm_token(response):
+        for key, value in response.cookies.items():
+            if key.startswith('download_warning'):
+                return value
+        return None
+
+    URL = 'https://drive.google.com/uc?export=download'
+    session = requests.Session()
+
+    response = session.get(URL, params={'id': file_id}, stream=True)
+    token    = get_confirm_token(response)
+
+    if token:
+        params   = {'id': file_id, 'confirm': token}
+        response = session.get(URL, params=params, stream=True)
+
+    with open(destination, 'wb') as f:
+        for chunk in response.iter_content(chunk_size=32768):
+            if chunk:
+                f.write(chunk)
 
 def download_data():
     os.makedirs('data', exist_ok=True)
     for filepath, file_id in FILE_IDS.items():
         if not os.path.exists(filepath):
-            url = f'https://drive.google.com/uc?id={FOLDER_ID}'
             with st.spinner(f'Downloading {filepath}...'):
-                gdown.download(url, filepath, quiet=False)
+                download_file(file_id, filepath)
+            st.success(f'✅ {filepath} downloaded!')
 
 download_data()
-
 
 # ════════════════════════════════════════════════════════
 # STEP 2 — LOAD DATA
