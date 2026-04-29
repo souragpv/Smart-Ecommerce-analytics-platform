@@ -33,7 +33,6 @@ FILE_IDS = {
 }
 
 def download_file(file_id, destination):
-    """Downloads a file from Google Drive using requests."""
 
     def get_confirm_token(response):
         for key, value in response.cookies.items():
