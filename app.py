@@ -40,7 +40,7 @@ def download_file(file_id, destination):
                 return value
         return None
 
-    URL = 'https://drive.google.com/uc?export=download'
+    URL = 'https://drive.google.com/drive/folders/1Ri_Hvit0yrEox1csG_w1Jv4qx7jsKB4I?usp=drive_link'
     session = requests.Session()
 
     response = session.get(URL, params={'id': file_id}, stream=True)
