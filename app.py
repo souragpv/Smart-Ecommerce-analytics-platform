@@ -45,7 +45,7 @@ for filename, url in FILES.items():
 # ════════════════════════════════════════════════════════
 
 def load_data():
-    df = pd.read_csv('data/cleaned_retail.csv')  # no parse_dates
+    df = pd.read_csv('Data/cleaned_retail.csv')  # no parse_dates
 
     # Rename if column has different casing
     df.columns = df.columns.str.strip()           # remove spaces
