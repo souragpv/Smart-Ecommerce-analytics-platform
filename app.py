@@ -21,29 +21,32 @@ st.set_page_config(
 # ════════════════════════════════════════════════════════
 # STEP 1 — AUTO DOWNLOAD DATA FROM GOOGLE DRIVE
 # ════════════════════════════════════════════════════════
-import gdown
 import os
+import gdown
+import streamlit as st
 
 FILE_IDS = {
-    'data/cleaned_retail.csv': '15WIrVm392pSeOkWfTaAguazFCbwlmqs3',
-    'data/rfm_segments.csv': '1aDABUakMpWHNlLvdfCHNkK-E01T9VKA1',
-    'data/weekly_sales.csv': '1G-8YvqXFmEND8XC5NFwN-1-ua1em4Mba',
-    'data/popular_products.csv': '1X8JpqmdD1QSfE5D_ymsFxxj4RSvkVNpi',
+    "cleaned_retail.csv": "15WIrVm392pSeOkWfTaAguazFCbwlmqs3",
+    "rfm_segments.csv": "1aDABUakMpWHNlLvdfCHNkK-E01T9VKA1",
+    "weekly_sales.csv": "1G-8YvqXFmEND8XC5NFwN-1-ua1em4Mba",
+    "popular_products.csv": "1X8JpqmdD1QSfE5D_ymsFxxj4RSvkVNpi",
 }
 
-def download_data():
+os.makedirs("data", exist_ok=True)
 
-    os.makedirs("data", exist_ok=True)
+for filename, file_id in FILE_IDS.items():
 
-    for output, file_id in FILE_IDS.items():
+    output = f"data/{filename}"
 
-        if not os.path.exists(output):
+    if not os.path.exists(output):
 
-            url = f"https://drive.google.com/drive/folders/1Ri_Hvit0yrEox1csG_w1Jv4qx7jsKB4I"
+        url = f"https://drive.google.com/uc?id={file_id}"
+
+        with st.spinner(f"Downloading {filename}..."):
 
             gdown.download(
-                url=url,
-                output=output,
+                url,
+                output,
                 quiet=False,
                 fuzzy=True
             )
