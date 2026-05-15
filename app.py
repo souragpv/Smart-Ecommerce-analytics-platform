@@ -63,7 +63,13 @@ def load_data():
 
 @st.cache_resource
 def load_rfm():
-    return pd.read_csv('Data/rfm_segments.csv')
+
+    return pd.read_csv(
+        'Data/rfm_segments.csv',
+        engine='python',
+        on_bad_lines='skip',
+        low_memory=False
+    )
 
 @st.cache_resource
 def load_weekly():
