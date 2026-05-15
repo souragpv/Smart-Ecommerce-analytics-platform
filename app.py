@@ -69,13 +69,22 @@ download_data()
 # STEP 2 — LOAD DATA
 # ════════════════════════════════════════════════════════
 
-@st.cache_resource
 def load_data():
-    df = pd.read_csv('Data/cleaned_retail.csv', parse_dates=['InvoiceDate'])
+    df = pd.read_csv('data/cleaned_retail.csv')  # no parse_dates
+
+    # Rename if column has different casing
+    df.columns = df.columns.str.strip()           # remove spaces
+    col_map = {c: c.replace(' ', '') for c in df.columns}
+    df = df.rename(columns=col_map)               # remove spaces in names
+
+    # Convert date manually
+    df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'], errors='coerce')
+
     df['CustomerID'] = df['CustomerID'].astype(int)
     df['Month']      = df['InvoiceDate'].dt.to_period('M').astype(str)
     df['DayOfWeek']  = df['InvoiceDate'].dt.day_name()
     return df
+
 
 @st.cache_resource
 def load_rfm():
@@ -89,37 +98,10 @@ def load_weekly():
 def load_popular():
     return pd.read_csv('Data/popular_products.csv')
 
-@st.cache_resource
 def build_matrix():
-    df_tmp = pd.read_csv('Data/cleaned_retail.csv')
+    df_tmp = pd.read_csv('data/cleaned_retail.csv')  # no parse_dates
+    df_tmp.columns  = df_tmp.columns.str.strip()
     df_tmp['CustomerID'] = df_tmp['CustomerID'].astype(int)
-
-    top_custs = (
-        df_tmp.groupby('CustomerID')['Invoice']
-        .nunique()
-        .sort_values(ascending=False)
-        .head(500).index
-    )
-    top_prods = (
-        df_tmp.groupby('StockCode')['Quantity']
-        .sum()
-        .sort_values(ascending=False)
-        .head(500).index
-    )
-    df_tmp = df_tmp[
-        df_tmp['CustomerID'].isin(top_custs) &
-        df_tmp['StockCode'].isin(top_prods)
-    ]
-    cp = (
-        df_tmp.groupby(['CustomerID', 'StockCode'])['Quantity']
-        .sum()
-        .unstack(fill_value=0)
-    )
-    cp.index.name   = None
-    cp.columns.name = None
-    ids = cp.index.tolist()
-    sim = cosine_similarity(cp.values)
-    return cp, sim, ids
 
 @st.cache_resource
 def build_forecast_model():
