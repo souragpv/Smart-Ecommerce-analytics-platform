@@ -51,8 +51,6 @@ for filename, file_id in FILE_IDS.items():
                 fuzzy=True
             )
 
-download_data()
-
 # ════════════════════════════════════════════════════════
 # STEP 2 — LOAD DATA
 # ════════════════════════════════════════════════════════
