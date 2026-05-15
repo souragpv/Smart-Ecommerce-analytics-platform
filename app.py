@@ -39,7 +39,7 @@ def download_data():
 
         if not os.path.exists(output):
 
-            url = f"https://drive.google.com/uc?id={file_id}"
+            url = f"https://drive.google.com/drive/folders/1Ri_Hvit0yrEox1csG_w1Jv4qx7jsKB4I"
 
             gdown.download(
                 url=url,
