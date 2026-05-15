@@ -21,9 +21,8 @@ st.set_page_config(
 # ════════════════════════════════════════════════════════
 # STEP 1 — AUTO DOWNLOAD DATA FROM GOOGLE DRIVE
 # ════════════════════════════════════════════════════════
-iimport os
+import os
 import gdown
-import streamlit as st
 
 FILE_IDS = {
     "cleaned_retail.csv": "15WIrVm392pSeOkWfTaAguazFCbwlmqs3",
@@ -39,19 +38,18 @@ def download_data():
     for filename, file_id in FILE_IDS.items():
 
         output = f"Data/{filename}"
+
+        
         if os.path.exists(output):
             os.remove(output)
 
         url = f"https://drive.google.com/drive/folders/1Ri_Hvit0yrEox1csG_w1Jv4qx7jsKB4I"
 
-        with st.spinner(f"Downloading {filename}..."):
-
-            gdown.download(
-                url=url,
-                output=output,
-                quiet=False,
-                fuzzy=True
-            )
+        gdown.download(
+            url,
+            output,
+            quiet=False
+        )
 
 download_data()
 
