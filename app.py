@@ -21,7 +21,7 @@ st.set_page_config(
 # ════════════════════════════════════════════════════════
 # STEP 1 — AUTO DOWNLOAD DATA FROM GOOGLE DRIVE
 # ════════════════════════════════════════════════════════
-import requests
+import gdown
 import os
 
 FILE_IDS = {
@@ -32,16 +32,21 @@ FILE_IDS = {
 }
 
 def download_data():
-    os.makedirs('data', exist_ok=True)
 
-    for filepath, file_id in FILE_IDS.items():
+    os.makedirs("data", exist_ok=True)
 
-        if not os.path.exists(filepath):
+    for output, file_id in FILE_IDS.items():
 
-            url = f'https://drive.google.com/uc?id={file_id}'
+        if not os.path.exists(output):
 
-            with st.spinner(f'Downloading {filepath}...'):
-                gdown.download(url, filepath, quiet=False)
+            url = f"https://drive.google.com/uc?id={file_id}"
+
+            gdown.download(
+                url=url,
+                output=output,
+                quiet=False,
+                fuzzy=True
+            )
 
 download_data()
 
