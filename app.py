@@ -24,44 +24,24 @@ st.set_page_config(
 import requests
 import os
 
-# ── Paste your 4 file IDs below ──
 FILE_IDS = {
-    'Data/cleaned_retail.csv'    : '15WIrVm392pSeOkWfTaAguazFCbwlmqs3',
-    'Data/rfm_segments.csv'      : '1aDABUakMpWHNlLvdfCHNkK-E01T9VKA1',
-    'Data/weekly_sales.csv'      : '1G-8YvqXFmEND8XC5NFwN-1-ua1em4Mba',
-    'Data/popular_products.csv'  : '1X8JpqmdD1QSfE5D_ymsFxxj4RSvkVNpi',
+    'data/cleaned_retail.csv': '15WIrVm392pSeOkWfTaAguazFCbwlmqs3',
+    'data/rfm_segments.csv': '1aDABUakMpWHNlLvdfCHNkK-E01T9VKA1',
+    'data/weekly_sales.csv': '1G-8YvqXFmEND8XC5NFwN-1-ua1em4Mba',
+    'data/popular_products.csv': '1X8JpqmdD1QSfE5D_ymsFxxj4RSvkVNpi',
 }
 
-def download_file(file_id, destination):
-
-    def get_confirm_token(response):
-        for key, value in response.cookies.items():
-            if key.startswith('download_warning'):
-                return value
-        return None
-
-    URL = 'https://drive.google.com/drive/folders/1Ri_Hvit0yrEox1csG_w1Jv4qx7jsKB4I?usp=drive_link'
-    session = requests.Session()
-
-    response = session.get(URL, params={'id': file_id}, stream=True)
-    token    = get_confirm_token(response)
-
-    if token:
-        params   = {'id': file_id, 'confirm': token}
-        response = session.get(URL, params=params, stream=True)
-
-    with open(destination, 'wb') as f:
-        for chunk in response.iter_content(chunk_size=32768):
-            if chunk:
-                f.write(chunk)
-
 def download_data():
-    os.makedirs('Data', exist_ok=True)
+    os.makedirs('data', exist_ok=True)
+
     for filepath, file_id in FILE_IDS.items():
+
         if not os.path.exists(filepath):
+
+            url = f'https://drive.google.com/uc?id={file_id}'
+
             with st.spinner(f'Downloading {filepath}...'):
-                download_file(file_id, filepath)
-            st.success(f'✅ {filepath} downloaded!')
+                gdown.download(url, filepath, quiet=False)
 
 download_data()
 
