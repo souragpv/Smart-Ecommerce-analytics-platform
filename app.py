@@ -21,7 +21,7 @@ st.set_page_config(
 # ════════════════════════════════════════════════════════
 # STEP 1 — AUTO DOWNLOAD DATA FROM GOOGLE DRIVE
 # ════════════════════════════════════════════════════════
-import os
+iimport os
 import gdown
 import streamlit as st
 
@@ -32,25 +32,28 @@ FILE_IDS = {
     "popular_products.csv": "1X8JpqmdD1QSfE5D_ymsFxxj4RSvkVNpi",
 }
 
-os.makedirs("data", exist_ok=True)
+os.makedirs("Data", exist_ok=True)
 
-for filename, file_id in FILE_IDS.items():
+def download_data():
 
-    output = f"data/{filename}"
+    for filename, file_id in FILE_IDS.items():
 
-    if not os.path.exists(output):
+        output = f"Data/{filename}"
+        if os.path.exists(output):
+            os.remove(output)
 
-        url = f"https://drive.google.com/uc?id={file_id}"
+        url = f"https://drive.google.com/drive/folders/1Ri_Hvit0yrEox1csG_w1Jv4qx7jsKB4I"
 
         with st.spinner(f"Downloading {filename}..."):
 
             gdown.download(
-                url,
-                output,
+                url=url,
+                output=output,
                 quiet=False,
                 fuzzy=True
             )
 
+download_data()
 # ════════════════════════════════════════════════════════
 # STEP 2 — LOAD DATA
 # ════════════════════════════════════════════════════════
