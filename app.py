@@ -25,10 +25,10 @@ import urllib.request
 import os
 
 FILES = {
-    "cleaned_retail.csv": "https://www.dropbox.com/home/Data?preview=cleaned_retail.csv",
-    "rfm_segments.csv": "https://www.dropbox.com/home/Data?preview=rfm_segments.csv",
-    "weekly_sales.csv": "https://www.dropbox.com/home/Data?preview=weekly_sales.csv",
-    "popular_products.csv": "https://www.dropbox.com/home/Data?preview=popular_products.csv",
+    "cleaned_retail.csv": "https://www.dropbox.com/scl/fi/nw267ch0e5cqmnohrvnp0/cleaned_retail.csv?rlkey=u1h0gni7ee82frthkov8dmmdb&st=a1lng8ps&dl=1",
+    "rfm_segments.csv": "https://www.dropbox.com/scl/fi/ey8divd7hoi6bnt68k68e/rfm_segments.csv?rlkey=fx1priataof9g8k9b4xf3cvo0&st=8jrow40e&dl=1",
+    "weekly_sales.csv": "https://www.dropbox.com/scl/fi/7ryoacdr1zo670ploqnu0/weekly_sales.csv?rlkey=y8jmr1y7h1ar9biebl3cobt3h&st=qxcfoe6q&dl=1",
+    "popular_products.csv": "https://www.dropbox.com/scl/fi/q7znv0t0wqfbrszok8xtn/popular_products.csv?rlkey=1oligs57uk48xuitifogxltdu&st=vf5q8kie&dl=1",
 }
 
 os.makedirs("Data", exist_ok=True)
