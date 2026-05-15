@@ -67,22 +67,19 @@ def load_rfm():
     return pd.read_csv(
         'Data/rfm_segments.csv',
         engine='python',
-        on_bad_lines='skip',
-        low_memory=False
+        on_bad_lines='skip'
     )
 
 @st.cache_resource
 def load_weekly():
     return pd.read_csv('Data/weekly_sales.csv',
         engine='python',
-        on_bad_lines='skip',
-        low_memory=False)
+        on_bad_lines='skip')
 
 @st.cache_resource
 def load_popular():
     return pd.read_csv('Data/popular_products.csv', engine='python',
-        on_bad_lines='skip',
-        low_memory=False)
+        on_bad_lines='skip')
 
 def build_matrix():
     df_tmp = pd.read_csv('Data/cleaned_retail.csv')  
