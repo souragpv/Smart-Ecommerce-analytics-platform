@@ -21,49 +21,25 @@ st.set_page_config(
 # ════════════════════════════════════════════════════════
 # STEP 1 — AUTO DOWNLOAD DATA FROM GOOGLE DRIVE
 # ════════════════════════════════════════════════════════
+import urllib.request
 import os
-import gdown
 
-FILE_IDS = {
-    "cleaned_retail.csv": "15WIrVm392pSeOkWfTaAguazFCbwlmqs3",
-    "rfm_segments.csv": "1aDABUakMpWHNlLvdfCHNkK-E01T9VKA1",
-    "weekly_sales.csv": "1G-8YvqXFmEND8XC5NFwN-1-ua1em4Mba",
-    "popular_products.csv": "1X8JpqmdD1QSfE5D_ymsFxxj4RSvkVNpi",
+FILES = {
+    "cleaned_retail.csv": "https://www.dropbox.com/home/Data?preview=cleaned_retail.csv",
+    "rfm_segments.csv": "https://www.dropbox.com/home/Data?preview=rfm_segments.csv",
+    "weekly_sales.csv": "https://www.dropbox.com/home/Data?preview=weekly_sales.csv",
+    "popular_products.csv": "https://www.dropbox.com/home/Data?preview=popular_products.csv",
 }
 
 os.makedirs("Data", exist_ok=True)
 
-def download_data():
+for filename, url in FILES.items():
 
-    for filename, file_id in FILE_IDS.items():
+    output = f"Data/{filename}"
 
-        output = f"Data/{filename}"
+    if not os.path.exists(output):
 
-        
-        if os.path.exists(output):
-            os.remove(output)
-
-        url = f"https://drive.google.com/drive/folders/1Ri_Hvit0yrEox1csG_w1Jv4qx7jsKB4I"
-
-        gdown.download(
-            url,
-            output,
-            quiet=False
-        )
-
-download_data()
-
-for filename in FILE_IDS.keys():
-
-    path = f"Data/{filename}"
-
-    with open(path, "r", encoding="utf-8", errors="ignore") as f:
-
-        first_line = f.readline()
-
-        if "<!DOCTYPE html>" in first_line:
-            st.error(f"{filename} was not downloaded correctly.")
-            st.stop()
+        urllib.request.urlretrieve(url, output)
 # ════════════════════════════════════════════════════════
 # STEP 2 — LOAD DATA
 # ════════════════════════════════════════════════════════
