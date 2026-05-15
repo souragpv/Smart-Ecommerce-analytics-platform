@@ -81,10 +81,75 @@ def load_popular():
     return pd.read_csv('Data/popular_products.csv', engine='python',
         on_bad_lines='skip')
 
+@st.cache_resource
 def build_matrix():
-    df_tmp = pd.read_csv('Data/cleaned_retail.csv')  
-    df_tmp.columns  = df_tmp.columns.str.strip()
+
+    df_tmp = pd.read_csv(
+        'Data/cleaned_retail.csv',
+        engine='python',
+        on_bad_lines='skip'
+    )
+
+    required_cols = [
+        'CustomerID',
+        'Invoice',
+        'StockCode',
+        'Quantity'
+    ]
+
+    # keep only needed columns
+    df_tmp = df_tmp[required_cols]
+
+    # remove missing values
+    df_tmp = df_tmp.dropna()
+
+    # convert types safely
+    df_tmp['CustomerID'] = pd.to_numeric(
+        df_tmp['CustomerID'],
+        errors='coerce'
+    )
+
+    df_tmp['Quantity'] = pd.to_numeric(
+        df_tmp['Quantity'],
+        errors='coerce'
+    )
+
+    df_tmp = df_tmp.dropna()
+
     df_tmp['CustomerID'] = df_tmp['CustomerID'].astype(int)
+
+    top_custs = (
+        df_tmp.groupby('CustomerID')['Invoice']
+        .nunique()
+        .sort_values(ascending=False)
+        .head(500)
+        .index
+    )
+
+    top_prods = (
+        df_tmp.groupby('StockCode')['Quantity']
+        .sum()
+        .sort_values(ascending=False)
+        .head(500)
+        .index
+    )
+
+    df_tmp = df_tmp[
+        df_tmp['CustomerID'].isin(top_custs) &
+        df_tmp['StockCode'].isin(top_prods)
+    ]
+
+    cp = (
+        df_tmp.groupby(['CustomerID', 'StockCode'])['Quantity']
+        .sum()
+        .unstack(fill_value=0)
+    )
+
+    ids = cp.index.tolist()
+
+    sim = cosine_similarity(cp.values)
+
+    return cp, sim, ids
 
 @st.cache_resource
 def build_forecast_model():
