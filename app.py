@@ -54,6 +54,18 @@ def download_data():
             )
 
 download_data()
+
+for filename in FILE_IDS.keys():
+
+    path = f"Data/{filename}"
+
+    with open(path, "r", encoding="utf-8", errors="ignore") as f:
+
+        first_line = f.readline()
+
+        if "<!DOCTYPE html>" in first_line:
+            st.error(f"{filename} was not downloaded correctly.")
+            st.stop()
 # ════════════════════════════════════════════════════════
 # STEP 2 — LOAD DATA
 # ════════════════════════════════════════════════════════
