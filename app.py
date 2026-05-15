@@ -73,14 +73,19 @@ def load_rfm():
 
 @st.cache_resource
 def load_weekly():
-    return pd.read_csv('Data/weekly_sales.csv')
+    return pd.read_csv('Data/weekly_sales.csv',
+        engine='python',
+        on_bad_lines='skip',
+        low_memory=False)
 
 @st.cache_resource
 def load_popular():
-    return pd.read_csv('Data/popular_products.csv')
+    return pd.read_csv('Data/popular_products.csv', engine='python',
+        on_bad_lines='skip',
+        low_memory=False)
 
 def build_matrix():
-    df_tmp = pd.read_csv('data/cleaned_retail.csv')  # no parse_dates
+    df_tmp = pd.read_csv('data/cleaned_retail.csv')  
     df_tmp.columns  = df_tmp.columns.str.strip()
     df_tmp['CustomerID'] = df_tmp['CustomerID'].astype(int)
 
