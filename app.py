@@ -85,7 +85,7 @@ def load_popular():
         low_memory=False)
 
 def build_matrix():
-    df_tmp = pd.read_csv('data/cleaned_retail.csv')  
+    df_tmp = pd.read_csv('Data/cleaned_retail.csv')  
     df_tmp.columns  = df_tmp.columns.str.strip()
     df_tmp['CustomerID'] = df_tmp['CustomerID'].astype(int)
 
