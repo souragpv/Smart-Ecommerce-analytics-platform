@@ -19,7 +19,7 @@ st.set_page_config(
 
 
 # ════════════════════════════════════════════════════════
-# STEP 1 — AUTO DOWNLOAD DATA FROM GOOGLE DRIVE
+# STEP 1 — AUTO DOWNLOAD DATA FROM Dropbox
 # ════════════════════════════════════════════════════════
 import urllib.request
 import os
@@ -45,14 +45,13 @@ for filename, url in FILES.items():
 # ════════════════════════════════════════════════════════
 
 def load_data():
-    df = pd.read_csv('Data/cleaned_retail.csv')  # no parse_dates
+    df = pd.read_csv('Data/cleaned_retail.csv') 
 
-    # Rename if column has different casing
-    df.columns = df.columns.str.strip()           # remove spaces
+    
+    df.columns = df.columns.str.strip()         
     col_map = {c: c.replace(' ', '') for c in df.columns}
-    df = df.rename(columns=col_map)               # remove spaces in names
+    df = df.rename(columns=col_map)             
 
-    # Convert date manually
     df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'], errors='coerce')
 
     df['CustomerID'] = df['CustomerID'].astype(int)
@@ -97,13 +96,13 @@ def build_matrix():
         'Quantity'
     ]
 
-    # keep only needed columns
+    # keeping only needed columns
     df_tmp = df_tmp[required_cols]
 
-    # remove missing values
+    # removing missing values
     df_tmp = df_tmp.dropna()
 
-    # convert types safely
+    # converting types safely
     df_tmp['CustomerID'] = pd.to_numeric(
         df_tmp['CustomerID'],
         errors='coerce'
@@ -167,7 +166,7 @@ def build_forecast_model():
     return model, revenue, window
 
 
-# ── Load everything ──
+# ── Load ──
 df               = load_data()
 rfm              = load_rfm()
 weekly_sales     = load_weekly()
